@@ -37,36 +37,34 @@ struct MovieRender: Identifiable  { // hashable gives random id
         // write logic to solve our problem
         var starTiersArray = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
         var cloestTier: Double = 0.0
-        var smallestDifference: Double = 0.0
+        var smallestDifference: Double = 6.0
         var starArray:[Int] = []
         
         // NOW:
         // 4.5 -> [0.0.0.0] -> 4 stars Images
         
-        // [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
         // abs() - gets the absolute value of a number (-0.3 -> 0.3, 0.3 -> 0.3)
         
-        for (index, item) in starTiersArray.enumerated() {
-            var diff = abs(item - rating) //[item] - parameter rating (4.3, 3.1, 1.7)
-            //1-4 =  - 3 -> abs() = 3
-            //1-3.1 = - 2.1 -> abs() = 2.1
+        for item in starTiersArray {  
+            // [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
             
-            // when array[0], put currentdiff onto the smallest Leaderboard
-            if index == 0 {
-               diff = smallestDifference
-                
-            } else if diff < smallestDifference {
-                // check if smaller than Leaderboard we update new value
-                cloestTier = smallestDifference
-                starTiersArray[0] = cloestTier
+            // rating = 2
+            // diff = [1, 0.5, 0, 0.5, 1, 1.5, 2, 2.5]
+            
+            let diff = abs(item - rating)  // this abs() will no minus
+            
+            if diff < smallestDifference {
+                smallestDifference = diff // give the destination updated value
+                cloestTier = item 
+                // ！Update the cloest tier when a small difference is found ！
             }
         }
-        // algorythm -> convert little bit of the closest
-        // 4.5 -> [?.?.?.?.?] -> 4 stars and 1 Half Star
+        // algorythm
+        // 4.5 -> [0, 0, 0, 0, 1] -> 4 stars and 1 Half Star
         
         // Divided our cloestTier Int
-        let intergerPart = Int(floor(cloestTier)) //abs()
-        let fractionalPart = cloestTier - Double(intergerPart) //0.5
+        let intergerPart = Int(floor(cloestTier)) // 4 from 4.5
+        let fractionalPart = cloestTier - Double(intergerPart) // 0.5 from 4.5
         
         starArray = Array(repeating: 0, count: intergerPart)
         
@@ -76,8 +74,6 @@ struct MovieRender: Identifiable  { // hashable gives random id
         
         print("star array : \(starArray)")
         return starArray
-        
-        //floor will round down to the next closest whole number [0,0,0,1]
     }
     
     
