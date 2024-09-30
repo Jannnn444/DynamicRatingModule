@@ -91,10 +91,20 @@ struct MovieRender: Identifiable  { // hashable gives random id
                 Text(movie.title)
                 
                 HStack{
-                    // [0,0,0]
+                    // [0,0,0,1]
                     ForEach(movie.ratings, id: \.self) { number in
-                        Image(systemName: "star.fill")
+                        if number == 0 {
+                            Image(systemName: "star.fill")
+                        } else if number == 1 {
+                            ZStack{
+                                Image(systemName: "star.fill")
+                                    .clipShape(Rectangle().size(width: 10, height: 20))
+                            }
+                        } else {
+                            Image(systemName: "star")
+                        }
                     }
+                    
                 }
             }
             
