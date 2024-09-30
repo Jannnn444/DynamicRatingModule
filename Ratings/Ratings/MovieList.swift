@@ -23,24 +23,23 @@ struct Movie: Identifiable  { // hashable gives random id
 }
     
     @State var movieList: [MovieRender] = []
-    var starTiers = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5]
-    
+
 // for UI
 struct MovieRender: Identifiable  { // hashable gives random id
     var id = UUID() // automatically trackable
     var title: String
     var sexy: Bool
     var ratings: [Int]  //array!!
-}
+} //   class, viewmodel, datamodel -> need init()
     
-    //   class, viewmodel, datamodel -> need init()
-
     // double for stars UI
     func repeatinZeroFromRatng(rating: Double) -> [Int] {
         // write logic to solve our problem
-        var starTiersArray = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
-        var smallestDifference: Double = 0
-  
+        var starTiersArray = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+        var cloestTier: Double = 0.0
+        var smallestDifference: Double = 0.0
+        var starArray:[Int] = []
+        
         // NOW:
         // 4.5 -> [0.0.0.0] -> 4 stars Images
         
@@ -48,34 +47,38 @@ struct MovieRender: Identifiable  { // hashable gives random id
         // abs() - gets the absolute value of a number (-0.3 -> 0.3, 0.3 -> 0.3)
         
         for (index, item) in starTiersArray.enumerated() {
-            var differenceCurr = abs(item - rating) //here we make the result absolute
+            var diff = abs(item - rating) //[item] - parameter rating (4.3, 3.1, 1.7)
+            //1-4 =  - 3 -> abs() = 3
+            //1-3.1 = - 2.1 -> abs() = 2.1
             
-            //1-4 =  - 3
-            //1-1.5 = - 0.5
-           
+            // when array[0], put currentdiff onto the smallest Leaderboard
             if index == 0 {
-                 smallestDifference = differenceCurr
-            } else {
-                print("The differnce is not smaller than rating")
-            }
-        }
-        
-        for (index, item) in starTiersArray.enumerated() {
-            if (item == 0) {
-                difference = Int(item)
-            } else {
-                // check if smaller we update
+               diff = smallestDifference
                 
+            } else if diff < smallestDifference {
+                // check if smaller than Leaderboard we update new value
+                cloestTier = smallestDifference
+                starTiersArray[0] = cloestTier
             }
         }
-
-        
-        // algorythm -> convert little bit of t he closest
+        // algorythm -> convert little bit of the closest
         // 4.5 -> [?.?.?.?.?] -> 4 stars and 1 Half Star
-        return Array.init(repeating: 0, count: Int(floor(rating))) //floor will round down to the next closest whole number
+        
+        // Divided our cloestTier Int
+        let intergerPart = Int(floor(cloestTier)) //abs()
+        let fractionalPart = cloestTier - Double(intergerPart) //0.5
+        
+        starArray = Array(repeating: 0, count: intergerPart)
+        
+        if fractionalPart > 0 {
+            starArray.append(1)
+        }
+        
+        print("star array : \(starArray)")
+        return starArray
+        
+        //floor will round down to the next closest whole number [0,0,0,1]
     }
-    
-
     
     
     var body: some View {
