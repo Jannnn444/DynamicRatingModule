@@ -9,9 +9,9 @@ import SwiftUI
 
 struct MovieList: View { // pretens from api
     var movieData: [Movie] = [
-        Movie(title: "Bone tomahawh", sexy: true, ratings: 4.3),
+        Movie(title: "Bone Tomahawh", sexy: true, ratings: 4.3),
         Movie(title: "Cars", sexy: false, ratings: 3.1),
-        Movie(title: "inception", sexy: true, ratings: 1.7)
+        Movie(title: "Inception", sexy: true, ratings: 1.7)
     ]
     
 // from API
@@ -23,19 +23,19 @@ struct Movie: Identifiable  { // hashable gives random id
 }
     
     @State var movieList: [MovieRender] = []
-
 // for UI
 struct MovieRender: Identifiable  { // hashable gives random id
     var id = UUID() // automatically trackable
     var title: String
     var sexy: Bool
     var ratings: [Int]  //array!!
-} //   class, viewmodel, datamodel -> need init()
+}
+    /*   class, viewmodel, datamodel -> need init() */
     
-    // double for stars UI
-    func repeatinZeroFromRatng(rating: Double) -> [Int] {
-        // write logic to solve our problem
-        var starTiersArray = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+    
+    func checkClosestNumberToShowStars(ratingNum: Double) -> [Int] {
+        
+        let starTiersArray = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
         var cloestTier: Double = 0.0
         var smallestDifference: Double = 6.0
         var starArray:[Int] = []
@@ -43,15 +43,10 @@ struct MovieRender: Identifiable  { // hashable gives random id
         // NOW:
         // 4.5 -> [0.0.0.0] -> 4 stars Images
         
-        // abs() - gets the absolute value of a number (-0.3 -> 0.3, 0.3 -> 0.3)
-        
-        for item in starTiersArray {  
-            // [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]
+        for item in starTiersArray {
+            // if rating = 2, diff = [1, 0.5, 0, 0.5, 1, 1.5, 2, 2.5]
             
-            // rating = 2
-            // diff = [1, 0.5, 0, 0.5, 1, 1.5, 2, 2.5]
-            
-            let diff = abs(item - rating)  // this abs() will no minus
+            let diff = abs(item - ratingNum)  // this abs() will no minus
             
             if diff < smallestDifference {
                 smallestDifference = diff // give the destination updated value
@@ -118,7 +113,7 @@ struct MovieRender: Identifiable  { // hashable gives random id
                 
                 MovieRender(
                     title: movie.title, sexy: movie.sexy,
-                    ratings: repeatinZeroFromRatng(rating: movie.ratings))
+                    ratings: checkClosestNumberToShowStars(ratingNum: movie.ratings))
             }
             
             self.movieList = formattedMovieList
