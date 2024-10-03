@@ -73,34 +73,42 @@ struct MovieRender: Identifiable  { // hashable gives random id
     
     // MARK: UI
     var body: some View {
-        ScrollView{
-            VStack {
-                //  Show Ratings Practices
-                Text("Ratng Practices")
-                
-                
-                ForEach(movieList) { movie in
-                    Rectangle()
-                        .fill(.blue)
-                        .frame(width: 200, height: 200)
-                    Text(movie.title)
+        ScrollView(.horizontal){
+            Text("Ratng Examples")
+            
+            HStack {
+                HStack {
                     
-                    HStack{
-                        // [0,0,0,1]
-                        ForEach(movie.ratings, id: \.self) { number in
-                            if number == 0 {
-                                Image(systemName: "star.fill")
-                            } else if number == 1 {
-                                ZStack{
-                                    Image(systemName: "star.fill")
-                                        .clipShape(Rectangle().size(width: 10, height: 20))
+                ForEach(movieList) { movie in
+                    
+                    VStack{ //this make the loop items groups in vertical
+                        Group {
+                            Rectangle()
+                                .fill(.blue)
+                                .frame(width: 200, height: 200)
+                            Text(movie.title)
+                            
+                            HStack { //this for displaying stars
+                                // [0,0,0,1]
+                                ForEach(movie.ratings, id: \.self) { number in
+                                    if number == 0 {
+                                        Image(systemName: "star.fill")
+                                    } else if number == 1 {
+                                        ZStack {
+                                            Image(systemName: "star.fill")
+                                                .clipShape(Rectangle().size(width: 10, height: 20))
+                                        }
+                                    } else {
+                                        Image(systemName: "star")
+                                    }
                                 }
-                            } else {
-                                Image(systemName: "star")
                             }
-                        }
+                        }.padding()
                     }
+                    
                 }
+                    
+            }
             }
             .onAppear {
                 print("movieData: \(movieData)")
